@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>NBA ELO&Prediction | Muyang Ye</title>
+        <style>
+            h1 {
+                text-align: center;
+                margin-bottom: 0px;
+            }
+            p {
+                margin-bottom: 0px;
+                width: 1100px;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+            img {
+                margin-left: auto;
+                margin-right: 28px;
+            }
+            form {
+                text-align: center;
+            }
+            h2 {
+                text-align: center;
+                margin-top: 0px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>NBA 2020-2021 Season Teams ELO Score</h1>
+        <p>The ELO rating system is a method for calculating the relative skill levels of players in zero-sum games.
+            It was first used in chess. For NBA, each team's initial ELO score is 1600, when a team beats another team,
+            its ELO score increases based on factors such as win expectation and opponent's ELO. So higher is stronger.
+        </p>
+        <img src="{{ url_for("static", filename="elo.png") }}">
+        <form action="/showprediction" method="POST">
+            <h2>Select two teams and see who's more likely to win, calculated by factors including ELO, 3-point field goals,
+                rebounds, home/visit, and more!</h2>
+            <label for="visit_team">Visit Team</label>
+            <select id="visit_team" name="visit_team">
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+            </select>
+            <label for="home_team">Home Team</label>
+            <select id="home_team" name="home_team">
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+            </select>
+            <p><input style="font-weight: bold; font-size: 1.5em;" type="submit" value="Predict!"></form></p>
+        </form>
+    </body>
+</html>

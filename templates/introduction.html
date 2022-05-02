@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NBA ELO&Prediction | Muyang Ye</title>
+    <style>
+        h1 {
+            margin-top: 100px;
+            text-align: center;
+        }
+        ul {
+            font-size: 1.25em;
+        }
+        li {
+            margin-left: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome! This project aims to predict the outcome of NBA matches using Logistic Regression with features including ELO, 3-point field goal, offensive/defensive rating, and much more. Final accuracy is around 65.5%. The source code can be found at <a target="_blank", href="https://github.com/muyangye/NBA_Prediction">my Github repository</a></h1>
+    <ul>Acknowledgements:
+        <li>The data used comes from <a target="_blank" href="https://www.basketball-reference.com/leagues/NBA_2021_games.html">https://www.basketball-reference.com/leagues/NBA_2021_games.html</a></li>
+        <li>To predict using the data from another season of your choice. Just go to the above website and select a different season. However, the website splits the schedules and results data into months. To get full season results, click "Get table as CSV" and copy the text to a cumulative txt file, then run "txt_to_csv.py" script I wrote</li>
+        <li>This project does not constitute any investment advice</li>
+    </ul>
+    <ul>Detailed description of ELO score calculation
+        <li>Initially, each team has an ELO score of 1600</li>
+        <li>Assume team A's current ELO score is RA and team B's current ELO score is RB</li>
+        <li>The expected win rate of A is EA = 1/( 1 + 10^( (RB-RA)/400 ) )</li>
+        <li>Similarly, expected win rate of B is EB = 1/( 1 + 10^( (RA-RB)/400 ) )</li>
+        <li>SA = If team A wins the match, it gets 1 point, if tie it gets 0.5 point, if lose it gets 0 point</li>
+        <li>Adjust team A's ELO score: RA' = RA + K * (SA - EA). RA' is now the new ELO score. Do the same for team B</li>
+        <li>K is defined as 32 if ELO is below 2100, 24 if ELO is between 2100 and 2400, 16 if ELO is above 2400. In this particular project ELO never surpasses 2100, so K is always 32</li>
+    </ul>
+    <form action="/showelo", method="GET">
+        <p style="text-align: center;"><input style="font-weight: bold; font-size: 1.5em; margin-top: 20px;" type="submit" value="Let's see each team's ELO score!"></p>
+    </form>
+</body>
+</html>
