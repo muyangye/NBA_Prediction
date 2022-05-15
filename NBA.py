@@ -9,16 +9,19 @@ from sklearn.model_selection import cross_val_score
 
 
 class NBA:
-    def __init__(self, results, team_stats, advanced_stats):
+    def __init__(self, results, team_stats, opponent_stats, advanced_stats):
         self.results = pd.read_csv(results)
         # Get unique teams
         self.teams = self.results["WinTeam"].unique()
         # self.ELOs: team name => ELO score
         self.ELOs = {}
         self.team_stats = pd.read_csv(team_stats)
+        self.opponent_stats = pd.read_csv(opponent_stats)
         self.advanced_stats = pd.read_csv(advanced_stats)
-        # Merge "2020_2021_TeamStats.csv" and "2020_2021_AdvancedStats.csv" together on column "Team"
-        self.stats = pd.merge(self.team_stats, self.advanced_stats, how="left", on="Team").set_index("Team")
+        # Merge "2020_2021_TeamStats.csv" and "2020_2021_OpponentStats.csv" together on column "Team"
+        temp = pd.merge(self.team_stats, self.opponent_stats, how="left", on="Team").set_index("Team")
+        # Merge temp and "2020_2021_AdvancedStats.csv" together on column "Team"
+        self.stats = pd.merge(temp, self.advanced_stats, how="left", on="Team").set_index("Team")
         # Features dataset with dimension 1171(#matches) * 92(#features)
         self.X = []
         # Match results dataset with dimension 1171(#matches) * 1
@@ -126,7 +129,7 @@ class NBA:
 
 
 # NBA model and Flask website
-NBA = NBA("2020_2021_results.csv", "2020_2021_TeamStats.csv", "2020_2021_AdvancedStats.csv")
+NBA = NBA("2020_2021_results.csv", "2020_2021_TeamStats.csv", "2020_2021_OpponentStats.csv", "2020_2021_AdvancedStats.csv")
 app = Flask(__name__)
 
 
